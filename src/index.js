@@ -12,7 +12,7 @@ import bgSlider from "./bgSlider"
 import todo from "./todo"
 // import './assets/favicon.ico'
 
-let userOptions = JSON.parse(localStorage.getItem("userOptions")) || {
+let userOptions =  {
   en: {
     Language: [
       { value: "EN", isChecked: true },
@@ -132,7 +132,7 @@ function changeBackgroundApi (data,checkbox){
   currentBgApi = data.value
   console.log('currentBgApi',currentBgApi)
   let chBox = document.querySelectorAll('.app-settings__input')
-  userOptions[language]["Photo source" || "Источник фото"] = userOptions[language]["Photo source" || "Источник фото"].map(item => {
+  userOptions[language][language === "en" ? "Photo source" : "Источник фото"] = userOptions[language][language === "en" ? "Photo source" : "Источник фото"].map(item => {
     if(item.value !== data.value){
       item.isChecked = false 
       
@@ -160,7 +160,7 @@ function changeBackgroundApi (data,checkbox){
   })
   // location.reload()
   // updateCheckStatus()
-  console.log(userOptions[language]["Photo source" || "Источник фото"])
+  console.log(userOptions[language][language === "en" ? "Photo source" : "Источник фото"])
 }
 
 // function updateCheckStatus(){
@@ -284,7 +284,7 @@ function drawSettingList() {
             drawAppBlock()
           }
           if(key === "Photo tags" || key === "Фото тэги"){
-           currentTags = userOptions[language]["Photo tags" || "Фото тэги"].filter(item => item.isChecked === true)
+           currentTags = userOptions[language][language === "en" ? "Photo tags" : "Фото тэги"].filter(item => item.isChecked === true)
            
           }
           console.log('key in listener',key)
@@ -356,9 +356,9 @@ let timeOfDay = getTimeOfDay()
 
 
 
-let currentTags = userOptions[language]["Photo tags" || "Фото тэги"].filter(item => item.isChecked === true)
+let currentTags = userOptions[language][language === "en" ? "Photo tags" : "Фото тэги"].filter(item => item.isChecked === true)
 
-let currentBgApi = userOptions[language]["Photo source" || "Источник фото"].filter(item => item.isChecked === true)[0].value || "Github"
+let currentBgApi = userOptions[language][language === "en" ? "Photo source" : "Источник фото"].filter(item => item.isChecked === true)[0].value || "Github"
 date(language,userOptions)
 quotes(quotesData, randomNum,userOptions)
 bgSlider(randomNum, timeOfDayEn,userOptions,currentBgApi,currentTags)
@@ -388,6 +388,7 @@ function getLocalStorage() {
 
 window.addEventListener("load", () => {
   getLocalStorage()
+  // userOptions =  JSON.parse(localStorage.getItem("userOptions") || "{}")
   if (!userCity) {
     console.log("language", language)
     userCity = minsk[language]
@@ -396,7 +397,7 @@ window.addEventListener("load", () => {
   greeting(timeOfDay, timeofDayLanguage, language, userName,userOptions)
   drawSettingList()
   console.log('userOptions checkbox',userOptions)
-  backgroundApi = userOptions['en']["Photo source" || "Источник фото"].filter(item => item.isChecked === true)[0]
+  backgroundApi = userOptions[language][language === "en" ? "Photo source" : "Источник фото"].filter(item => item.isChecked === true)[0]
 console.log('backgroundApi',backgroundApi)
 })
 
